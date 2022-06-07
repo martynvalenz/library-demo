@@ -1,0 +1,77 @@
+// app global css in Sass form
+*
+  font-family: 'MavenPro-Regular'
+
+.q-field
+  font-size: 17px !important
+
+.q-tooltip
+  font-size:14px
+  background: #41436a
+  opacity: 90%
+
+.light-rows
+  thead
+    th
+      font-size: 15px
+      font-weight: 600
+  tr:nth-of-type(odd)
+    background-color: #f2f2f2
+.dark-rows
+  tr:nth-of-type(odd)
+    background-color: #262626
+
+ul.no-bullets
+  list-style-type: none
+  margin: 0
+  padding-left: 6px
+
+.GPLAY
+  &__toolbar
+    height: 60px
+  &__logo
+    width: 183px
+    height: 39px
+  &__toolbar-input-container
+    min-width: 100px
+    width: 55%
+  &__toolbar-input-btn
+    border-radius: 0
+    max-width: 60px
+    width: 100%
+  &__drawer-link
+    .q-item__section--avatar
+      margin: -8px 0 -8px -16px
+      padding: 8px 0 8px 16px
+    .q-item__section--main
+      margin: -8px -16px -8px 16px
+      padding: 8px 16px 8px 2px
+      font-size: 18px
+      font-weight: 300
+    &--loans, &--wishlist, &--account, &--books, &--users
+      background: #f5f5f5!important
+      &:hover
+        color: #eee !important
+    &--books:hover
+      background: #41436a!important
+    &--loans:hover
+      background: #974063!important
+    &--wishlist:hover
+      background: #f54768!important
+    &--account:hover
+      background: #ff9677!important
+    &--users:hover
+      background: #546e7a!important
+  &__drawer-item
+    padding: 6px 12px 6px 23px
+  &__sticky
+    min-height: 49px
+    border-bottom: 1px solid rgba(0,0,0,0.12)
+  &__sticky-help
+    border: 1px solid #ccc
+    padding-left: 8px
+    padding-right: 8px
+  &__sticky-settings
+    padding-left: 17px
+    padding-right: 17px
+    border: 1px solid #ccc
