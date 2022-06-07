@@ -65,9 +65,6 @@
                           <q-btn icon="thumb_up" class="q-px-sm" dense color="secondary">
                             <q-tooltip>Add to favorites</q-tooltip>
                           </q-btn>
-                          <q-btn icon="edit" class="q-px-sm" dense color="warning" v-if="userData.role === 'Admin'">
-                            <q-tooltip>Edit book</q-tooltip>
-                          </q-btn>
                         </div>
                       </q-item>
                     </q-list>

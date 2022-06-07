@@ -1,6 +1,6 @@
 <template>
   <q-list>
-    <q-item clickable class="GPLAY__drawer-link bg-grey-10 text-grey-3">
+    <q-item class="GPLAY__drawer-link bg-grey-10 text-grey-3">
       <q-item-section avatar class="text-grey-1">
         <q-icon name="menu" />
       </q-item-section>
@@ -9,7 +9,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--books" to="/admin">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--books" to="/admin" exact-active-class="text-active">
       <q-item-section avatar class="bg-primary text-grey-1 text-center">
         <q-icon name="menu_book" />
       </q-item-section>
@@ -18,7 +18,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--loans" to="/admin/my-loans">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--loans" to="/admin/my-loans" exact-active-class="text-active">
       <q-item-section avatar class="bg-secondary text-grey-1 text-center">
         <q-icon name="book" />
       </q-item-section>
@@ -27,7 +27,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--wishlist">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--wishlist" exact-active-class="text-active">
       <q-item-section avatar class="bg-accent text-grey-1 text-center">
         <q-icon name="volunteer_activism" />
       </q-item-section>
@@ -36,7 +36,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--account">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--account" exact-active-class="text-active">
       <q-item-section avatar class="books-icon bg-warning text-grey-1 text-center">
         <q-icon name="person" />
       </q-item-section>
@@ -45,7 +45,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--users" v-if="userData.role === 'Admin'" :to="{name:'Users'}">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--users" v-if="userData.role === 'Admin'" :to="{name:'Users'}" exact-active-class="text-active">
       <q-item-section avatar class="devices-icon bg-blue-grey-7 text-grey-1 text-center">
         <q-icon name="people" />
       </q-item-section>
@@ -54,7 +54,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--users" v-if="userData.role === 'Admin'" :to="{name:'Books'}">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--users" v-if="userData.role === 'Admin'" :to="{name:'Books'}" exact-active-class="text-active">
       <q-item-section avatar class="devices-icon bg-blue-grey-7 text-grey-1 text-center">
         <q-icon name="view_list" />
       </q-item-section>
@@ -100,5 +100,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.text-active{
+  font-weight:900 !important;
+  color:#f54768 !important;
+}
 </style>

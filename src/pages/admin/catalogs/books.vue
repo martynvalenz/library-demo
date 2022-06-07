@@ -56,12 +56,6 @@
                       </q-item>
                       <q-item>
                         <div class="row q-gutter-xs">
-                          <q-btn icon="shopping_cart" class="q-px-sm" dense color="primary" :disable="book.stock === 0">
-                            <q-tooltip>Add to cart</q-tooltip>
-                          </q-btn>
-                          <q-btn icon="thumb_up" class="q-px-sm" dense color="secondary">
-                            <q-tooltip>Add to favorites</q-tooltip>
-                          </q-btn>
                           <q-btn icon="edit" class="q-px-sm" dense color="warning" v-if="userData.role === 'Admin'">
                             <q-tooltip>Edit book</q-tooltip>
                           </q-btn>

@@ -149,7 +149,9 @@ export default defineComponent({
 
     const signUp = () => {
       loading.value = true;
-      api.post("/auth/login", {
+      api.post("/auth/sign-up", {
+        name: name.value,
+        lastName: lastName.value,
         email: email.value,
         password: password.value,
       })
