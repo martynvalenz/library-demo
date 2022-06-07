@@ -45,12 +45,21 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--users">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--users" v-if="userData.role === 'Admin'" :to="{name:'Users'}">
       <q-item-section avatar class="devices-icon bg-blue-grey-7 text-grey-1 text-center">
         <q-icon name="people" />
       </q-item-section>
       <q-item-section class="devices-text">
         <q-item-label>Users</q-item-label>
+      </q-item-section>
+    </q-item>
+
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--users" v-if="userData.role === 'Admin'" :to="{name:'Books'}">
+      <q-item-section avatar class="devices-icon bg-blue-grey-7 text-grey-1 text-center">
+        <q-icon name="view_list" />
+      </q-item-section>
+      <q-item-section class="devices-text">
+        <q-item-label>Catalogs</q-item-label>
       </q-item-section>
     </q-item>
 
@@ -65,13 +74,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { useAuthStore } from 'src/stores/auth'
+import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   setup () {
-
+    const $auth = useAuthStore()
+    const userData = computed(() => $auth.getUserData)
 
     return {
+      userData,
       links1: [
         { text: 'Account' },
         { text: 'Payment methods' },

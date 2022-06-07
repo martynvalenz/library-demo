@@ -4,12 +4,9 @@
       <div class="col-xs-12">
         <q-card flat bordered>
           <q-toolbar>
-            <!-- <div class="row q-gutter-xs" v-if="userData.role === 'Admin'">
+            <div class="row q-gutter-xs" v-if="userData.role === 'Admin'">
               <q-btn label="Book" icon-right="add" no-caps color="primary" @click="createBook()" />
               <q-btn label="Category" icon-right="add" no-caps color="secondary" @click="createCategory()" />
-            </div> -->
-            <div class="q-pa-xs">
-              <q-input outlined dense v-model="user" label="User" placeholder="Search user..."></q-input>
             </div>
             <q-space></q-space>
             <q-btn flat round dense icon="sync"></q-btn>
@@ -105,13 +102,13 @@ import BookForm from 'src/components/Dialogs/BookForm.vue';
 import { useAuthStore } from 'src/stores/auth';
 
 export default defineComponent({
-  name: 'Dashboard',
+  name: 'Catalogs',
   components: {
     CategoryForm,
     BookForm
 },
   setup () {
-    const title = ref(`Books | ${process.env.TITLE}`);
+    const title = ref(`Catalogs | ${process.env.TITLE}`);
     useMeta(() => {
       return {
         title: title.value,

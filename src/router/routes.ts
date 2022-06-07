@@ -17,6 +17,9 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', name:'Admin', component: () => import('pages/admin/dashboard.vue'), meta: { requireAuth: true } },
       { path: '/admin/my-loans', name:'Loans', component: () => import('pages/admin/loans.vue'), meta: { requireAuth: true } },
+      // Catalogs
+      { path: '/admin/catalogs/users', name:'Users', component: () => import('pages/admin/catalogs/users.vue'), meta: { requireAuth: true } },
+      { path: '/admin/catalogs/books', name:'Books', component: () => import('pages/admin/catalogs/books.vue'), meta: { requireAuth: true } },
     ],
   },
 

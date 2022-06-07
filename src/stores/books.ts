@@ -26,6 +26,8 @@ export const useBookStore = defineStore('books', {
 
     storeBook(book: Book) {
       this.books.push(book);
+      const index = this.categories.findIndex(cat => cat.id === book.categoryId._id);
+      this.categories[index].books ++;
     }
   },
 });
