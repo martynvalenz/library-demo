@@ -10,19 +10,15 @@
             <q-item-label caption>Name</q-item-label>
             <q-item-label>{{user.name}} {{user.lastName}}</q-item-label>
           </q-item-section>
-          <q-item-section>
+          <q-item-section v-if="$q.screen.gt.xs">
             <q-item-label caption>Email</q-item-label>
-            <q-item-label>{{user.name}} {{user.lastName}}</q-item-label>
+            <q-item-label>{{user.email}}</q-item-label>
           </q-item-section>
-          <q-item-section>
-            <q-item-label caption>Email</q-item-label>
-            <q-item-label>{{user.name}} {{user.lastName}}</q-item-label>
-          </q-item-section>
-          <q-item-section>
+          <q-item-section v-if="$q.screen.gt.xs">
             <q-item-label caption>Loans</q-item-label>
             <q-item-label>{{user.loans}}</q-item-label>
           </q-item-section>
-          <q-item-section :side="user.role === 'Admin'">
+          <q-item-section :side="user.role === 'Admin'" v-if="$q.screen.gt.xs">
             <q-item-label caption>Status?</q-item-label>
             <q-item-label>
               <q-chip square :color="user.hasAccess ? 'positive':'negative'" :label="user.hasAccess ? 'Active':'Inactive'" dark></q-chip>

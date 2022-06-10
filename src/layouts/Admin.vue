@@ -21,7 +21,7 @@
 
         <div class="GPLAY__toolbar-input-container row no-wrap">
           <q-input dense outlined square v-model="search" placeholder="Search" class="bg-white col" />
-          <q-btn class="GPLAY__toolbar-input-btn" color="primary" icon="search" unelevated />
+          <q-btn class="GPLAY__toolbar-input-btn" color="primary" icon="search" unelevated v-if="$q.screen.gt.sm" />
         </div>
 
         <q-space />

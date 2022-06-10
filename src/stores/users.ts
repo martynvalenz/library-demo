@@ -25,5 +25,13 @@ export const useUsersStore = defineStore('users', {
     pushUser(user: User) {
       this.users.push(user)
     },
+
+    updateMyAccount(user: User) {
+      const index = this.users.findIndex(u => u.id === user.id);
+      this.users[index].name = user.name;
+      this.users[index].lastName = user.lastName;
+      this.users[index].email = user.email;
+      this.users[index].hasAccess = user.hasAccess;
+    }
   },
 });

@@ -57,6 +57,12 @@ export const useAuthStore = defineStore('auth', {
       LocalStorage.set('isAuthenticated',false);
       LocalStorage.set('token','');
       axios.defaults.headers.common['token'] = '';
+    },
+
+    updateMyAccount(user:User){
+      this.userData.name = user.name;
+      this.userData.lastName = user.lastName;
+      this.userData.email = user.email;
     }
   },
 });

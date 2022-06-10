@@ -36,7 +36,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--account" exact-active-class="text-active">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--account" exact-active-class="text-active" :to="{name:'Account'}">
       <q-item-section avatar class="books-icon bg-warning text-grey-1 text-center">
         <q-icon name="person" />
       </q-item-section>
