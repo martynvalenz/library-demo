@@ -28,6 +28,12 @@ export const useBookStore = defineStore('books', {
       this.books.push(book);
       const index = this.categories.findIndex(cat => cat.id === book.categoryId._id);
       this.categories[index].books ++;
+    },
+
+    updateBook(book: Book) {
+      const index = this.books.findIndex(b => b.id === book.id);
+      this.books[index] = book;
+      // TODO: missing update category books
     }
   },
 });

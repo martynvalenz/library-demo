@@ -56,7 +56,7 @@
                       </q-item>
                       <q-item>
                         <div class="row q-gutter-xs">
-                          <q-btn icon="edit" class="q-px-sm" dense color="warning" v-if="userData.role === 'Admin'">
+                          <q-btn icon="edit" class="q-px-sm" dense color="warning" v-if="userData.role === 'Admin'" @click="editBook(book.id)">
                             <q-tooltip>Edit book</q-tooltip>
                           </q-btn>
                         </div>
@@ -82,7 +82,7 @@
       <CategoryForm/>
     </q-dialog>
     <q-dialog v-model="bookForm" :maximized="$q.screen.lt.md">
-      <BookForm/>
+      <BookForm :action="action" :bookId="bookId" v-on:closeBookDialog="closeBookDialog()" />
     </q-dialog>
   </q-page>
 </template>
@@ -116,6 +116,8 @@ export default defineComponent({
     const bookForm = ref(false)
     const user = ref('')
     const books = computed(() => $books.getBooks);
+    const bookId = ref('')
+    const action = ref('')
 
     onMounted(() => {
       optionList.value = LocalStorage.getItem('optionList') || 'list';
@@ -128,7 +130,21 @@ export default defineComponent({
     }
 
     const createBook = () => {
+      bookId.value = ''
+      action.value = 'create'
       bookForm.value = true
+    }
+
+    const editBook = (id: string) => {
+      bookId.value = id
+      action.value = 'edit'
+      bookForm.value = true
+    }
+
+    const closeBookDialog = () => {
+      bookId.value = ''
+      action.value = 'create'
+      bookForm.value = false
     }
 
     return {
@@ -138,8 +154,12 @@ export default defineComponent({
       books,
       categoryForm,
       bookForm,
+      bookId,
+      action,
       createCategory,
-      createBook
+      createBook,
+      editBook,
+      closeBookDialog
     }
   }
 })

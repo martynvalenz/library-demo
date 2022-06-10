@@ -88,10 +88,20 @@ import {axios} from 'src/boot/axios'
 import { manageErrors } from 'src/helpers/manage-errors'
 import { notification } from 'src/helpers/notify'
 import { useBookStore } from 'src/stores/books'
-import { defineComponent,ref,computed } from 'vue'
+import { defineComponent,ref,computed, onMounted } from 'vue'
 
 export default defineComponent({
-  setup () {
+  props:{
+    bookId:{
+      type:String
+    },
+    action:{
+      type:String,
+      required:true
+    },
+  },
+
+  setup (props,{emit}) {
     const $books = useBookStore()
     const loading = ref(false)
     const book = ref({
@@ -132,20 +142,62 @@ export default defineComponent({
 
     const storeCategory = () => {
       loading.value = true;
-      axios.post(`${process.env.API}/books/store`, book.value)
-      .then(async (res: any) => {
-        loading.value = false;
-        $books.storeBook(res.data.book)
-        clearBook()
+      if(props.bookId){
+        axios.put(`${process.env.API}/books/update/${props.bookId}`, book.value)
+        .then(async (res: any) => {
+          loading.value = false;
+          $books.updateBook(res.data.book)
+          clearBook()
+          clearErrors()
+          notification('Book updated successfully','positive');
+          emit('closeBookDialog');
+        })
+        .catch((error:any) => {
+          console.log(error);
+          loading.value = false;
+          if (error.response.data.errors) {
+            errors.value = error.response.data.errors;
+          }
+          manageErrors(error);
+        });
+      }
+      else{
+        axios.post(`${process.env.API}/books/store`, book.value)
+        .then(async (res: any) => {
+          loading.value = false;
+          $books.storeBook(res.data.book)
+          clearBook()
+          clearErrors()
+          notification('Book created successfully','positive')
+        })
+        .catch((error:any) => {
+          console.log(error);
+          loading.value = false;
+          if (error.response.data.errors) {
+            errors.value = error.response.data.errors;
+          }
+          manageErrors(error);
+        });
+      }
+    }
+
+    onMounted(() => {
+      if(props.action === 'edit') {
+        editBook()
         clearErrors()
-        notification('Book created successfully','positive')
+      }
+      else{
+        clearErrors()
+      }
+    })
+
+    const editBook = () => {
+      axios.get(`${process.env.API}/books/${props.bookId}`)
+      .then((res: any) => {
+        book.value = res.data.book
       })
       .catch((error:any) => {
         console.log(error);
-        loading.value = false;
-        if (error.response.data.errors) {
-          errors.value = error.response.data.errors;
-        }
         manageErrors(error);
       });
     }
