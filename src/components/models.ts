@@ -8,6 +8,7 @@ export interface Meta {
 }
 
 export interface UserData {
+  id:string;
   color:string;
   initials:string;
   name:string;
@@ -42,4 +43,16 @@ export interface Category {
   slug:string;
   books:number;
   isActive:boolean;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  lastName: string;
+  email: string;
+  initials: string;
+  color: string;
+  loans: number;
+  hasAccess: boolean;
+  role: string;
 }

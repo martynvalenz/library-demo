@@ -1,11 +1,12 @@
 import {axios} from 'src/boot/axios';
 import { defineStore } from 'pinia';
 import { LocalStorage } from 'quasar';
-import { UserData } from 'src/components/models';
+import { UserData,User } from 'src/components/models';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     userData:{
+      id:'',
       color:'',
       initials:'',
       name:'',
@@ -15,7 +16,7 @@ export const useAuthStore = defineStore('auth', {
     } as UserData,
   }),
   getters: {
-    getUserData: (state) => state.userData
+    getUserData: (state) => state.userData,
   },
   actions: {
     signInWithToken(data:any){
@@ -41,6 +42,7 @@ export const useAuthStore = defineStore('auth', {
 
     async logOut(){
       this.userData = {
+        id:'',
         color:'',
         initials:'',
         name:'',

@@ -63,6 +63,7 @@ import { useBookStore } from 'src/stores/books'
 import {axios} from 'src/boot/axios'
 import MainMenu from 'src/components/MainMenu.vue'
 import UserMenu from 'src/components/UserMenu.vue'
+import { useUsersStore } from 'src/stores/users'
 
 export default {
   name: 'Admin',
@@ -81,6 +82,7 @@ export default {
     }
     const $auth = useAuthStore()
     const $books = useBookStore()
+    const $users = useUsersStore()
     const userData = computed(() => $auth.getUserData)
     onMounted(() => {
       getUserData()
@@ -92,6 +94,7 @@ export default {
         $auth.setUserData(res.data.user)
         $books.setCategories(res.data.categories)
         $books.setBooks(res.data.books)
+        $users.setUsers(res.data.users)
       })
       .catch(error => {
         console.log(error)

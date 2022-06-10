@@ -24,7 +24,7 @@
                 <img src="/logos/logo-title.png" alt="GoVita" style="height:60px">
               </q-toolbar-title>
             </q-toolbar>
-            <q-form>
+            <q-form @submit.prevent="signUp()">
               <q-card-section>
                 <div class="row">
                   <div class="col-xs-12 q-pa-sm">
@@ -87,10 +87,9 @@
                       color="primary"
                       label="Create Account"
                       style="font-size: 18px"
-                      to="/admin"
                       no-caps
                       :loading="loading"
-                      @click="signUp()"
+                      type="submit"
                     >
                       <template v-slot:loading>
                         <q-spinner-facebook />
