@@ -42,7 +42,7 @@
                 </div>
                 <div class="row">
                   <div class="col-xs-12 q-pa-sm">
-                    <q-input v-model.trim="email" label="Email" outlined>
+                    <q-input v-model.trim="email" label="Email" outlined type="email">
                       <template v-slot:prepend>
                         <q-icon name="mail" />
                       </template>

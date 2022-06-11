@@ -27,7 +27,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--wishlist" exact-active-class="text-active">
+    <q-item clickable class="GPLAY__drawer-link GPLAY__drawer-link--wishlist" exact-active-class="text-active" :to="{name:'Wishlist'}">
       <q-item-section avatar class="bg-accent text-grey-1 text-center">
         <q-icon name="volunteer_activism" />
       </q-item-section>

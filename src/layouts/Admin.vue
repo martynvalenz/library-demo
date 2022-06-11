@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR fFf" class="bg-grey-3">
-    <q-header class="bg-grey-3 text-grey-9" reveal height-hint="60">
+    <q-header class="bg-grey-3 text-grey-9" reveal height-hint="60" elevated>
       <q-toolbar class="GPLAY__toolbar text-grey-6">
         <q-btn
           v-if="$q.platform.is.mobile || !leftDrawerOpen"
@@ -93,7 +93,6 @@ export default {
       .then(res => {
         $auth.setUserData(res.data.user)
         $books.setCategories(res.data.categories)
-        $books.setBooks(res.data.books)
         $users.setUsers(res.data.users)
       })
       .catch(error => {

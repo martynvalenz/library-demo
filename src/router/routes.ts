@@ -17,6 +17,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       { path: '', name:'Admin', component: () => import('pages/admin/dashboard.vue'), meta: { requireAuth: true } },
       { path: '/admin/my-loans', name:'Loans', component: () => import('pages/admin/loans.vue'), meta: { requireAuth: true } },
+      { path: '/admin/wishlist', name:'Wishlist', component: () => import('pages/admin/wishlist.vue'), meta: { requireAuth: true } },
       { path: '/admin/my-account', name:'Account', component: () => import('pages/admin/my-account.vue'), meta: { requireAuth: true } },
       // Catalogs
       { path: '/admin/catalogs/users', name:'Users', component: () => import('pages/admin/catalogs/users.vue'), meta: { requireAuth: true } },

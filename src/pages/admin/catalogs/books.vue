@@ -15,7 +15,7 @@
           <q-card-section class="q-pa-sm" v-if="books.length > 0">
             <div class="row">
               <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs" v-for="book in books" :key="book.id">
-                <q-card>
+                <!-- <q-card>
                   <q-card-section horizontal>
                     <q-img
                       :class="$q.screen.xs ? 'col-5':'col-4'"
@@ -63,7 +63,8 @@
                       </q-item>
                     </q-list>
                   </q-card-section>
-                </q-card>
+                </q-card> -->
+                <Book :book="book" section="books" />
               </div>
             </div>
           </q-card-section>
@@ -93,13 +94,16 @@ import { useBookStore } from 'src/stores/books';
 import { computed, defineComponent,onMounted,ref } from 'vue'
 import CategoryForm from 'src/components/Dialogs/CategoryForm.vue';
 import BookForm from 'src/components/Dialogs/BookForm.vue';
+import Book from 'src/components/Book.vue';
 import { useAuthStore } from 'src/stores/auth';
+import { axios } from 'src/boot/axios';
 
 export default defineComponent({
   name: 'Catalogs',
   components: {
     CategoryForm,
-    BookForm
+    BookForm,
+    Book
 },
   setup () {
     const title = ref(`Catalogs | ${process.env.TITLE}`);
@@ -125,6 +129,13 @@ export default defineComponent({
 
     const userData = computed(() => $auth.userData);
 
+    onMounted(() => {
+      axios.post(`${process.env.API}/books`,{})
+      .then(res => {
+        $books.setBooks(res.data);
+      })
+    });
+
     const createCategory = () => {
       categoryForm.value = true
     }
@@ -132,12 +143,6 @@ export default defineComponent({
     const createBook = () => {
       bookId.value = ''
       action.value = 'create'
-      bookForm.value = true
-    }
-
-    const editBook = (id: string) => {
-      bookId.value = id
-      action.value = 'edit'
       bookForm.value = true
     }
 
@@ -158,7 +163,6 @@ export default defineComponent({
       action,
       createCategory,
       createBook,
-      editBook,
       closeBookDialog
     }
   }

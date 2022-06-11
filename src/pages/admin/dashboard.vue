@@ -4,72 +4,40 @@
       <div class="col-xs-12">
         <q-card flat bordered>
           <q-toolbar>
-            <!-- <div class="row q-gutter-xs" v-if="userData.role === 'Admin'">
-              <q-btn label="Book" icon-right="add" no-caps color="primary" @click="createBook()" />
-              <q-btn label="Category" icon-right="add" no-caps color="secondary" @click="createCategory()" />
-            </div> -->
             <div class="q-pa-xs">
-              <q-input outlined dense v-model="user" label="User" placeholder="Search user..."></q-input>
+              <q-btn-dropdown color="secondary" :label="userName ? userName : 'Select User'" no-caps>
+                <q-list>
+                  <q-item v-for="user in users" :key="user.id" clickable v-close-popup @click="selectUser(user)">
+                    <q-item-section>
+                      <q-item-label>{{user.username}}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-btn-dropdown>
             </div>
             <q-space></q-space>
-            <q-btn flat round dense icon="sync"></q-btn>
+            <q-btn flat round dense icon="sync" @click="changePage()">
+              <q-tooltip>Refresh</q-tooltip>
+            </q-btn>
           </q-toolbar>
           <q-separator/>
           <q-card-section class="q-pa-sm" v-if="books.length > 0">
             <div class="row">
-              <div class="col-xs-12 col-sm-6 col-md-4 q-pa-xs" v-for="book in books" :key="book.id">
-                <q-card>
-                  <q-card-section horizontal>
-                    <q-img
-                      :class="$q.screen.xs ? 'col-5':'col-4'"
-                      :src="book.coverImage"
-                      contain
-                    >
-                    </q-img>
-                    <q-list :class="$q.screen.xs ? 'col-7':'col-8'">
-                      <q-item>
-                        <q-item-section>
-                          <q-item-label caption>Title</q-item-label>
-                          <q-item-label class="text-h6">{{book.title}}</q-item-label>
-                        </q-item-section>
-                        <q-item-section side>
-                          <q-item-label caption>Stock</q-item-label>
-                          <q-item-label>
-                            <q-badge v-if="book.stock > 1">{{book.stock}}</q-badge>
-                            <q-badge v-if="book.stock === 1" color="orange">{{book.stock}}</q-badge>
-                            <q-badge v-if="book.stock === 0" color="negative">No Stock</q-badge>
-                          </q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item>
-                        <q-item-section>
-                          <q-item-label caption>Author</q-item-label>
-                          <q-item-label>{{book.author}}</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item>
-                        <q-item-section>
-                          <q-item-label caption>Category</q-item-label>
-                          <q-item-label>{{book.categoryId.category}}</q-item-label>
-                        </q-item-section>
-                        <q-item-section side>
-                          <q-item-label caption>Published</q-item-label>
-                          <q-item-label>{{book.year}}</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item>
-                        <div class="row q-gutter-xs">
-                          <q-btn icon="shopping_cart" class="q-px-sm" dense color="primary" :disable="book.stock === 0">
-                            <q-tooltip>Add to cart</q-tooltip>
-                          </q-btn>
-                          <q-btn icon="thumb_up" class="q-px-sm" dense color="secondary">
-                            <q-tooltip>Add to favorites</q-tooltip>
-                          </q-btn>
-                        </div>
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 q-pa-xs" v-for="book in books" :key="book.id">
+                <Book :book="book" section="dashboard" />
+              </div>
+            </div>
+            <div class="row flex flex-center">
+              <div class="row q-pa-lg flex flex-center">
+                <q-pagination
+                  v-model="parameters.page"
+                  :max="parameters.totalPages"
+                  direction-links
+                  size="lg"
+                  :max-pages="5"
+                  boundary-numbers
+                  @update:model-value="changePage()"
+                />
               </div>
             </div>
           </q-card-section>
@@ -88,7 +56,7 @@
       <CategoryForm/>
     </q-dialog>
     <q-dialog v-model="bookForm" :maximized="$q.screen.lt.md">
-      <BookForm/>
+      <BookForm :bookId="bookId" action="edit" />
     </q-dialog>
   </q-page>
 </template>
@@ -99,14 +67,18 @@ import { useBookStore } from 'src/stores/books';
 import { computed, defineComponent,onMounted,ref } from 'vue'
 import CategoryForm from 'src/components/Dialogs/CategoryForm.vue';
 import BookForm from 'src/components/Dialogs/BookForm.vue';
+import Book from 'src/components/Book.vue';
 import { useAuthStore } from 'src/stores/auth';
+import {useBooks} from 'src/composables/useBooksComposable';
+import { useUsersStore } from 'src/stores/users';
 
 export default defineComponent({
   name: 'Dashboard',
   components: {
     CategoryForm,
-    BookForm
-},
+    BookForm,
+    Book
+  },
   setup () {
     const title = ref(`Books | ${process.env.TITLE}`);
     useMeta(() => {
@@ -117,24 +89,32 @@ export default defineComponent({
 
     const $books = useBookStore();
     const $auth = useAuthStore();
+    const $users = useUsersStore();
     const optionList = ref('')
     const categoryForm = ref(false)
     const bookForm = ref(false)
     const user = ref('')
+    const bookId = ref('')
+    const userId = ref('')
+    const userName = ref('')
     const books = computed(() => $books.getBooks);
+    const parameters = computed(() => $books.parameters);
+    const users = computed(() => $users.showAllUsers);
 
     onMounted(() => {
-      optionList.value = LocalStorage.getItem('optionList') || 'list';
+      getBooks()
     });
-
     const userData = computed(() => $auth.userData);
 
-    const createCategory = () => {
-      categoryForm.value = true
+    const {getBooks} = useBooks()
+
+    const changePage = () => {
+      getBooks()
     }
 
-    const createBook = () => {
-      bookForm.value = true
+    const selectUser = (user:any) => {
+      userId.value = user.id;
+      userName.value = user.username;
     }
 
     return {
@@ -142,10 +122,15 @@ export default defineComponent({
       userData,
       optionList,
       books,
+      parameters,
+      bookId,
+      userId,
+      userName,
+      users,
       categoryForm,
       bookForm,
-      createCategory,
-      createBook
+      changePage,
+      selectUser,
     }
   }
 })

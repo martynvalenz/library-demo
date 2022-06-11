@@ -16,6 +16,16 @@ export const useUsersStore = defineStore('users', {
         return state.users.filter(user => user.role === 'Admin');
       }
     },
+    showAllUsers: (state) => {
+      const users:any[] = [];
+      state.users.forEach((user:User)=> {
+        users.push({
+          id: user.id,
+          username:`${user.name} ${user.lastName}`,
+        });
+      });
+      return users;
+    }
   },
   actions: {
     setUsers(users: User[]) {

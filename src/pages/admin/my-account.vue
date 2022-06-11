@@ -46,7 +46,7 @@
                 </div>
               </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
               <div class="col-xs-12 q-pa-sm">
                 <q-toggle
                   v-model="hasAccess"
@@ -54,7 +54,7 @@
                   label="The user has access?"
                 />
               </div>
-            </div>
+            </div> -->
             <div class="row q-py-sm">
               <div class="col-xs-12 q-pa-sm">
                 <q-btn

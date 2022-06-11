@@ -5,6 +5,18 @@ export const useBookStore = defineStore('books', {
   state: () => ({
     books: Array<Book>(),
     categories: Array<Category>(),
+    parameters:{
+      totalDocs: 0,
+      offset: 0,
+      limit: 9,
+      totalPages: 0,
+      page: 1,
+      pagingCounter: 0,
+      hasPrevPage: false,
+      hasNextPage: true,
+      prevPage: null,
+      nextPage: 0
+    }
   }),
   getters: {
     getBooks: (state) => state.books,
@@ -20,8 +32,10 @@ export const useBookStore = defineStore('books', {
       this.categories = categories;
     },
 
-    setBooks(books: Book[]) {
-      this.books = books;
+    setBooks(data: any) {
+      this.books = data.docs;
+      this.parameters.totalPages = data.totalPages;
+      this.parameters.page = data.page;
     },
 
     storeBook(book: Book) {
@@ -33,7 +47,6 @@ export const useBookStore = defineStore('books', {
     updateBook(book: Book) {
       const index = this.books.findIndex(b => b.id === book.id);
       this.books[index] = book;
-      // TODO: missing update category books
     }
   },
 });
