@@ -9,7 +9,9 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "icon": "icongenie generate --icon public/logos/logo.png --skip-trim --theme-color fff",
-    "icon:pwa": "icongenie generate -m pwa --icon public/logos/logo.png --skip-trim --theme-color fff"
+    "icon:pwa": "icongenie generate -m pwa --icon public/logos/logo.png --skip-trim --theme-color fff",
+    "build": "quasar build",
+    "firebase": "quasar build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

@@ -22,7 +22,7 @@
               </div>
             </div>
           </q-card-section>
-           <q-card-section>
+           <q-card-section v-if="books.length > 0 && !skeleton">
             <div class="row flex flex-center">
               <q-pagination
                 v-model="parameters.page"
