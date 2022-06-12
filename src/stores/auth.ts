@@ -1,10 +1,12 @@
 import {axios} from 'src/boot/axios';
 import { defineStore } from 'pinia';
 import { LocalStorage } from 'quasar';
-import { UserData,User } from 'src/components/models';
+import { UserData,User,Notification } from 'src/components/models';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
+    selectedNotificationId:'',
+    notifications: Array<Notification>(),
     userData:{
       id:'',
       color:'',
@@ -63,6 +65,19 @@ export const useAuthStore = defineStore('auth', {
       this.userData.name = user.name;
       this.userData.lastName = user.lastName;
       this.userData.email = user.email;
+    },
+
+    setNotifications(data:any){
+      this.notifications = data;
+    },
+
+    selectNotification(id:string){
+      this.selectedNotificationId = id;
+    },
+
+    spliceNotification(){
+      const index = this.notifications.findIndex(n => n.id === this.selectedNotificationId);
+      this.notifications.splice(index,1);
     }
-  },
+  }
 });

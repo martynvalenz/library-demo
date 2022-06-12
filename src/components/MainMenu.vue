@@ -1,9 +1,6 @@
 <template>
   <q-list>
     <q-item class="GPLAY__drawer-link bg-grey-10 text-grey-3">
-      <q-item-section avatar class="text-grey-1">
-        <q-icon name="menu" />
-      </q-item-section>
       <q-item-section class="text-grey-3">
         <q-item-label>Main Menu</q-item-label>
       </q-item-section>
@@ -23,7 +20,7 @@
         <q-icon name="book" />
       </q-item-section>
       <q-item-section class="movies-text">
-        <q-item-label>My Loans</q-item-label>
+        <q-item-label>{{ userData.role === 'User' ? 'My Loans':'Loans' }}</q-item-label>
       </q-item-section>
     </q-item>
 
@@ -32,7 +29,7 @@
         <q-icon name="volunteer_activism" />
       </q-item-section>
       <q-item-section class="movies-text">
-        <q-item-label>Wishlist</q-item-label>
+        <q-item-label>My Wishlist</q-item-label>
       </q-item-section>
     </q-item>
 

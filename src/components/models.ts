@@ -56,3 +56,22 @@ export interface User {
   hasAccess: boolean;
   role: string;
 }
+
+export interface Cart {
+  id: string;
+  userId:string;
+  status:string;
+  books?:Array<Book>[];
+}
+
+export interface Notification {
+  id: string;
+  text:string;
+  userId:{
+    _id?:string;
+    name?:string;
+    lastName?:string;
+    color?:string;
+    initials?:string;
+  };
+}

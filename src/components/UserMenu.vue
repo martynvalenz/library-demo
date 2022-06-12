@@ -5,6 +5,11 @@
     </q-avatar>
     <q-menu>
       <q-list>
+        <q-item :to="{name:'Account'}" clickable v-ripple>
+          <q-item-section>
+            {{ userData.name }} {{ userData.lastName }}
+          </q-item-section>
+        </q-item>
         <q-item @click="logOut()" clickable v-ripple>
           <q-item-section avatar>
             <q-icon name="logout" color="negative"/>

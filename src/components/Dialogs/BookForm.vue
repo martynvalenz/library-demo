@@ -67,6 +67,9 @@
             {{error}}
           </div>
         </div>
+        <div class="col-xs-6 q-pa-xs">
+          <q-toggle v-model="book.isActive" :label="book.isActive ? 'Book is Active':'Book is Inactive'" color="positive" size="lg" />
+        </div>
       </div>
       <div class="row q-pa-xs">
         <q-btn
@@ -111,6 +114,7 @@ export default defineComponent({
       year:'',
       stock:0,
       categoryId:'',
+      isActive:true,
     })
 
     const errors = ref({

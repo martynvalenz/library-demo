@@ -5,6 +5,10 @@ export const useBookStore = defineStore('books', {
   state: () => ({
     books: Array<Book>(),
     categories: Array<Category>(),
+    selectedCategory:{
+      id:null,
+      category:null,
+    },
     parameters:{
       totalDocs: 0,
       offset: 0,
@@ -19,7 +23,17 @@ export const useBookStore = defineStore('books', {
     }
   }),
   getters: {
-    getBooks: (state) => state.books,
+    getBooks: (state) => {
+      const books:Array<Book> = [];
+      if(state.books.length > 0) {
+        state.books.forEach((book:Book) => {
+          const findCategory = state.categories.find(cat => cat.id === book.categoryId);
+          Object.assign(book,{category:{category:findCategory?.category,id:findCategory?.id}});
+          books.push(book);
+        });
+      }
+      return books;
+    },
     getCategories: (state) => state.categories,
     getActiveCategories: (state) => state.categories.filter(category => category.isActive),
   },
@@ -47,6 +61,20 @@ export const useBookStore = defineStore('books', {
     updateBook(book: Book) {
       const index = this.books.findIndex(b => b.id === book.id);
       this.books[index] = book;
+    },
+
+    selectCategory(category:any){
+      this.selectedCategory.id = category.id;
+      this.selectedCategory.category = category.category;
+    },
+
+    clearCategory(){
+      this.selectedCategory.id = null;
+      this.selectedCategory.category = null;
+    },
+
+    setPage(page: number) {
+      this.parameters.page = page;
     }
   },
 });

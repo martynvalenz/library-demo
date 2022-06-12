@@ -1,27 +1,49 @@
-import { useQuasar } from "quasar";
 import { axios } from "src/boot/axios";
 import { useBookStore } from "src/stores/books";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 export function useBooks() {
   const $books = useBookStore();
   const parameters = computed(() => $books.parameters);
-  const $q = useQuasar()
+  const selectedCategory = computed(() => $books.selectedCategory);
+  const skeleton = ref(true);
 
   const getBooks = () => {
-    $q.loading.show();
+    skeleton.value = true;
     axios.post(`${process.env.API}/books`,{
-      search:'',
+      category:selectedCategory.value.id,
       page:parameters.value.page,
       limit:9,
     })
     .then(res => {
       $books.setBooks(res.data.results);
-      $q.loading.hide();
+      skeleton.value = false;
+    })
+    .catch(error => {
+      console.log(error);
+      skeleton.value = false;
+    })
+  }
+
+  const getBooksAdmin = () => {
+    skeleton.value = true;
+    axios.post(`${process.env.API}/books/admins`,{
+      page:parameters.value.page,
+      limit:9,
+    })
+    .then(res => {
+      $books.setBooks(res.data.results);
+      skeleton.value = false;
+    })
+    .catch(error => {
+      console.log(error);
+      skeleton.value = false;
     })
   }
 
   return {
-    getBooks
+    getBooksAdmin,
+    getBooks,
+    skeleton,
   }
 }

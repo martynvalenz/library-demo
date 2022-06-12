@@ -5,15 +5,37 @@
         <q-card flat bordered>
           <q-toolbar>
             <div class="q-pa-xs">
-              <q-btn-dropdown color="secondary" :label="userName ? userName : 'Select User'" no-caps>
-                <q-list>
-                  <q-item v-for="user in users" :key="user.id" clickable v-close-popup @click="selectUser(user)">
-                    <q-item-section>
-                      <q-item-label>{{user.username}}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
+              <q-btn-group>
+                <q-btn-dropdown
+                  :label="selectedCategory.category ? selectedCategory.category : 'Filter by Category'"
+                  color="primary"
+                  no-caps
+                >
+                  <q-list>
+                    <q-item
+                      v-close-popup
+                      @click="clearCategory()"
+                      clickable
+                    >
+                      <q-item-section>
+                        <q-item-label :class="selectedCategory.id === null ? 'text-accent':''">All Categories</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item
+                      v-for="category in categories"
+                      :key="category.id"
+                      v-close-popup
+                      @click="selectCategory(category)"
+                      clickable
+                    >
+                      <q-item-section>
+                        <q-item-label :class="selectedCategory.id === category.id ? 'text-accent':''">{{category.category}}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-btn-dropdown>
+                <q-btn color="primary" icon="close" v-if="selectedCategory.id" @click="clearCategory()" />
+              </q-btn-group>
             </div>
             <q-space></q-space>
             <q-btn flat round dense icon="sync" @click="changePage()">
@@ -21,33 +43,34 @@
             </q-btn>
           </q-toolbar>
           <q-separator/>
-          <q-card-section class="q-pa-sm" v-if="books.length > 0">
+          <q-card-section v-if="skeleton">
+            <Skeleton />
+          </q-card-section>
+          <q-card-section class="q-pa-sm" v-if="books.length > 0 && !skeleton">
             <div class="row">
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 q-pa-xs" v-for="book in books" :key="book.id">
-                <Book :book="book" section="dashboard" />
-              </div>
-            </div>
-            <div class="row flex flex-center">
-              <div class="row q-pa-lg flex flex-center">
-                <q-pagination
-                  v-model="parameters.page"
-                  :max="parameters.totalPages"
-                  direction-links
-                  size="lg"
-                  :max-pages="5"
-                  boundary-numbers
-                  @update:model-value="changePage()"
-                />
+              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 q-pa-xs" v-for="(book,index) in books" :key="index">
+                <Book :book="book" section="dashboard" :index="index" />
               </div>
             </div>
           </q-card-section>
-          <q-card-section v-else>
+          <q-card-section>
+            <div class="row flex flex-center">
+              <q-pagination
+                v-model="parameters.page"
+                :max="parameters.totalPages"
+                direction-links
+                size="lg"
+                :max-pages="5"
+                boundary-numbers
+                @update:model-value="changePage()"
+              />
+            </div>
+          </q-card-section>
+          <q-card-section v-if="books.length === 0 && !skeleton">
             <div class="row flex flex-center">
               <div class="text-h4">No books found!</div>
             </div>
-            <div class="row flex flex-center q-pt-lg">
-              <img src="/img/library.png" alt="desk" />
-            </div>
+            <EmptyImage />
           </q-card-section>
         </q-card>
       </div>
@@ -68,6 +91,8 @@ import { computed, defineComponent,onMounted,ref } from 'vue'
 import CategoryForm from 'src/components/Dialogs/CategoryForm.vue';
 import BookForm from 'src/components/Dialogs/BookForm.vue';
 import Book from 'src/components/Book.vue';
+import EmptyImage from 'src/components/EmptyImage.vue';
+import Skeleton from 'src/components/Skeleton.vue';
 import { useAuthStore } from 'src/stores/auth';
 import {useBooks} from 'src/composables/useBooksComposable';
 import { useUsersStore } from 'src/stores/users';
@@ -77,7 +102,9 @@ export default defineComponent({
   components: {
     CategoryForm,
     BookForm,
-    Book
+    Book,
+    Skeleton,
+    EmptyImage,
   },
   setup () {
     const title = ref(`Books | ${process.env.TITLE}`);
@@ -95,26 +122,32 @@ export default defineComponent({
     const bookForm = ref(false)
     const user = ref('')
     const bookId = ref('')
-    const userId = ref('')
-    const userName = ref('')
     const books = computed(() => $books.getBooks);
+    const categories = computed(() => $books.getActiveCategories);
     const parameters = computed(() => $books.parameters);
+    const selectedCategory = computed(() => $books.selectedCategory);
     const users = computed(() => $users.showAllUsers);
 
     onMounted(() => {
+      $books.setPage(1);
       getBooks()
     });
     const userData = computed(() => $auth.userData);
 
-    const {getBooks} = useBooks()
+    const {getBooks, skeleton} = useBooks()
 
     const changePage = () => {
       getBooks()
     }
 
-    const selectUser = (user:any) => {
-      userId.value = user.id;
-      userName.value = user.username;
+    const selectCategory = (cat:any) => {
+      $books.selectCategory(cat)
+      getBooks()
+    }
+
+    const clearCategory = () => {
+      $books.clearCategory()
+      getBooks()
     }
 
     return {
@@ -122,15 +155,17 @@ export default defineComponent({
       userData,
       optionList,
       books,
+      skeleton,
       parameters,
+      categories,
+      selectedCategory,
       bookId,
-      userId,
-      userName,
       users,
       categoryForm,
       bookForm,
       changePage,
-      selectUser,
+      selectCategory,
+      clearCategory,
     }
   }
 })

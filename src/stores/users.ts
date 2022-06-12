@@ -4,6 +4,10 @@ import { User } from 'src/components/models';
 export const useUsersStore = defineStore('users', {
   state: () => ({
     users:Array<User>(),
+    selectedUser:{
+      id:'',
+      username:'',
+    }
   }),
   getters: {
     getUsers: (state) => {
@@ -22,6 +26,8 @@ export const useUsersStore = defineStore('users', {
         users.push({
           id: user.id,
           username:`${user.name} ${user.lastName}`,
+          name: user.name,
+          lastName: user.lastName,
         });
       });
       return users;
@@ -42,6 +48,11 @@ export const useUsersStore = defineStore('users', {
       this.users[index].lastName = user.lastName;
       this.users[index].email = user.email;
       this.users[index].hasAccess = user.hasAccess;
+    },
+
+    setSelectedUser(user: User) {
+      this.selectedUser.id = user.id;
+      this.selectedUser.username = `${user.name} ${user.lastName}`;
     }
   },
 });
